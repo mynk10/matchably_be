@@ -1,18 +1,21 @@
 const express = require("express");
 const { adminAuth } = require("./middleware/admin");
 const { connectDB } = require("./config/database");
+const User = require("./models/user");
 
 const app = express(); //making an instance of an express server
 
 //request handler
-app.use("/admin", adminAuth);
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    firstName: "Jai",
+    lastName: "Sharma",
+    emailId: "jai@gmail.com",
+    password: "jai @123",
+  });
 
-app.get("/admin/getData", (req, res) => {
-  res.send("fetched data");
-});
-
-app.get("/admin/deleteData", (req, res) => {
-  res.send("deleted data");
+  await user.save();
+  res.send("User added successfully");
 });
 
 connectDB()

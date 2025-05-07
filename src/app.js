@@ -8,10 +8,31 @@ app.use(express.json());
 
 //request handler
 app.post("/signup", async (req, res) => {
-  //creating new instance of User model
+  //creating new instance of User model`
   const user = new User(req.body);
   await user.save();
   res.send("User added successfully");
+});
+
+//get user by emial id
+app.get("/user", async (req, res) => {
+  const userEmail = req.body.emailId;
+  try {
+    const user = await User.find({ emailId: userEmail });
+    res.send(user);
+  } catch (err) {
+    res.status(400).send("something went wrong");
+  }
+});
+
+//get all users
+app.get("/feed", async (req, res) => {
+  try {
+    const user = await User.find({});
+    res.send(user);
+  } catch (err) {
+    res.status(400).send("something went wrong");
+  }
 });
 
 connectDB()

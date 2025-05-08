@@ -1,20 +1,56 @@
 const express = require("express");
 const { adminAuth } = require("./middleware/admin");
+const { validateSignupData } = require("./utils/validation");
 const { connectDB } = require("./config/database");
+const bcrypt = require("bcrypt");
 const User = require("./models/user");
 
 const app = express(); //making an instance of an express server
 app.use(express.json());
 
-//request handler
+//user signup  request handler 
 app.post("/signup", async (req, res) => {
-  //creating new instance of User model`
-  const user = new User(req.body);
-  await user.save();
-  res.send("User added successfully");
+  try {
+    // validating the credintials of user
+    validateSignupData(req);
+    const { firstName, lastName, emailId, password } = req.body;
+    // encrypting the password
+    const hashPassword = await bcrypt.hash(password, 10);
+    //creating new instance of User model
+    const user = new User({
+      firstName,
+      lastName,
+      emailId,
+      password: hashPassword,
+    });
+    await user.save();
+    res.send("User added successfully");
+  } catch (err) {
+    res.status(400).send("ERROR:" + err.message);
+  }
 });
 
-//get user by emial id
+
+// user login
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    const user = await User.findOne({ emailId: emailId });
+    if (!user) {
+      throw new Error("invalid credentials");
+    }
+    const comparePassword = await bcrypt.compare(password, user.password);
+    if (comparePassword) {
+      res.send("login successfull!!");
+    } else {
+      throw new Error("invalid credentials");
+    }
+  } catch (err) {
+    res.status(400).send("ERROR : " + err.message);
+  }
+});
+
+//find user by emailID
 app.get("/user", async (req, res) => {
   const userEmail = req.body.emailId;
   try {
@@ -54,7 +90,7 @@ app.patch("/update/:userId", async (req, res) => {
     });
     res.send("User updated successfully");
   } catch (err) {
-    res.status(400).send("update fail: " + err.message);
+    res.status(400).send("update fail:  " + err.message);
   }
 });
 

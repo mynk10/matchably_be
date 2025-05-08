@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema(
       validate(value) {
         const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
         if (!emailRegex.test(value)) throw new Error("email is not valid");
+        // using validator library
+        // if(!validator.isEmail(value)){thorw new Error("email is not valid")}
       },
     },
     password: { type: String, required: true },

@@ -18,6 +18,9 @@ authRouter.post("/signup", async (req, res) => {
       lastName,
       emailId,
       password: hashPassword,
+      description,
+      age,
+      gender,
     });
     await user.save();
     res.send("User added successfully");
@@ -47,6 +50,12 @@ authRouter.post("/login", async (req, res) => {
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
   }
+});
+
+//user logout
+authRouter.post("/logout", (req, res) => {
+  res.cookie("token", null, { expires: new Date(Date.now()) });
+  res.send("user logged out ");
 });
 
 module.exports = authRouter;

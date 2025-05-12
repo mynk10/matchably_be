@@ -11,7 +11,21 @@ const validateSignupData = (req) => {
   }
 };
 
-module.exports = { validateSignupData };
+const validateEditProfileData = (req) => {
+  const validFieldUpdate = [
+    "firstName",
+    "lastName",
+    "age",
+    "gender",
+    "description",
+  ];
+  const isVlaidFieldUpdate = Object.keys(req.body).every((feild) =>
+    validFieldUpdate.includes(feild)
+  );
 
+  return isVlaidFieldUpdate;
+};
 
-//this is a helper /utility function 
+module.exports = { validateSignupData, validateEditProfileData };
+
+//this is a helper /utility function

@@ -10,6 +10,7 @@ const connectionRequestschema = new mongoose.Schema(
     toUserId: { type: mongoose.Schema.Types.ObjectId, required: true },
     status: {
       type: String,
+      ref: "User",
       required: true,
       enum: {
         values: ["ignored", "interested", "accepted", "rejected"],

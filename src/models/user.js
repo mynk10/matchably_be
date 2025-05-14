@@ -29,11 +29,10 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    description: { type: String, default: " " },
+    description: { type: String, default: "hello" },
   },
   { timestamps: true }
 );
-
 
 userSchema.methods.getJWT = async function () {
   const user = this;

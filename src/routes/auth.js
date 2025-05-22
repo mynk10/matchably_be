@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const { validateSignupData } = require("../utils/validation");
+
 const authRouter = express.Router();
 
 //user signup  request handler
@@ -44,7 +45,7 @@ authRouter.post("/login", async (req, res) => {
       const token = await user.getJWT();
       //store jwt in a cookie
       res.cookie("token", token);
-      res.send("login successfull!!");
+      res.send(user);
     } else {
       throw new Error("invalid credentials");
     }

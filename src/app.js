@@ -10,7 +10,14 @@ const userRouter = require("./routes/user");
 const app = express(); //making an instance of an express server
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:5173/login", credentials: true }));
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+  })
+);
 
 app.use("/", authRouter);
 app.use("/", profileRouter);

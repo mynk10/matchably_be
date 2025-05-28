@@ -7,20 +7,24 @@ const connectionRequestschema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    toUserId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    toUserId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     status: {
       type: String,
       ref: "User",
       required: true,
       enum: {
-        values: ["ignored", "interested", "accepted", "rejected"],
+        values: ["interested", "ignored", "accepted", "rejected"],
         message: "{value} is incorrect status type",
       },
     },
   },
   { timestamps: true }
 );
-connectionRequestschema.index({ fromUserId: 1, toUserId: 1 });
+connectionRequestschema.index({ fromUserId: 1, toUserId: 1 }); //compound indexing for making expensive operations optimized
 
 const ConnectionRequestModel = new mongoose.model(
   "ConnectionRequest",

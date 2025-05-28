@@ -7,13 +7,13 @@ const userRouter = express.Router();
 
 userRouter.get("/user/request/received", userAuth, async (req, res) => {
   try {
-    user = req.user;
+    const user = req.user;
     const ConnectionRequests = await ConnectionRequest.find({
       toUserId: user._id,
       status: "interested",
-    }).populate("fromUserId", "firstName lastName");
+    }).populate("fromUserId", "firstName lastName"); //.populate("fromUserId", ["firstName","lastName"]) ---we can either write it in string or in array
     res.json({
-      messgae: "data fetched successfully ",
+      message: "data fetched successfully ",
       data: ConnectionRequests,
     });
   } catch (err) {
@@ -38,7 +38,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         return row.toUserId;
       } else return row.fromUserId;
     });
-    res.json({ data });
+    res.json({ message: "connection fetched successfully", data: data });
   } catch (err) {
     res.send("ERROR : " + err.message);
   }
@@ -51,7 +51,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     limit = limit > 50 ? 50 : limit;
     const skip = (page - 1) * limit;
 
-    user = req.user;
+    const user = req.user;
     const connectionRequest = await ConnectionRequest.find({
       $or: [{ fromUserId: user._id }, { toUserId: user._id }],
     }).select("fromUserId toUserId");
@@ -73,9 +73,9 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    res.json({ users });
+    res.json(users);
   } catch (err) {
-    res.status(400).json({ messgae: err.message });
+    res.status(400).json({ message: err.message });
   }
 });
 

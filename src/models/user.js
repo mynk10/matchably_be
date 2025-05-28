@@ -29,7 +29,8 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    description: { type: String, default: "hello" },
+    description: { type: String, default: "this is default about of user " },
+    photoURL: { type: String, default: "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" },
   },
   { timestamps: true }
 );

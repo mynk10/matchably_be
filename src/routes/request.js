@@ -10,6 +10,8 @@ requestRouter.post("/request/:status/:toUserId", userAuth, async (req, res) => {
     const toUserId = req.params.toUserId;
     const status = req.params.status;
 
+    //checking corner cases 
+      
     const allowedStatus = ["interested", "ignored"];
     if (!allowedStatus.includes(status)) {
       return res.status(400).json({ message: "invalid status type " + status });
@@ -25,9 +27,9 @@ requestRouter.post("/request/:status/:toUserId", userAuth, async (req, res) => {
     }
 
     const existingConnectionRequest = await ConnectionRequest.findOne({
-      $or: [
-        { fromUserId, toUserId },
-        { fromUserId: toUserId, toUserId: fromUserId },
+      $or: [ //mongo db or condition 
+        { fromUserId, toUserId },// this is the check if the from user id and to user id already exist in connection db (already connection request is sent )
+        { fromUserId: toUserId, toUserId: fromUserId },//this is the check if the to user id has already sent connection request to from user id (so it will be a pending connection request for from user id)
       ],
     });
     if (existingConnectionRequest) {

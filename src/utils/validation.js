@@ -18,6 +18,7 @@ const validateEditProfileData = (req) => {
     "age",
     "gender",
     "description",
+    "photoURL",
   ];
   const isVlaidFieldUpdate = Object.keys(req.body).every((feild) =>
     validFieldUpdate.includes(feild)

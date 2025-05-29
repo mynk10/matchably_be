@@ -10,8 +10,7 @@ authRouter.post("/signup", async (req, res) => {
   try {
     // validating the credintials of user
     validateSignupData(req);
-    const { firstName, lastName, emailId, password, description, age, gender } =
-      req.body;
+    const { firstName, lastName, emailId, password } = req.body;
     // encrypting the password
     const hashPassword = await bcrypt.hash(password, 10);
     //creating new instance of User model
@@ -20,13 +19,11 @@ authRouter.post("/signup", async (req, res) => {
       lastName,
       emailId,
       password: hashPassword,
-      description,
-      age,
-      gender,
-      photoURL,
     });
     await user.save();
-    res.send("User added successfully");
+    const token = await user.getJWT();
+    res.cookie("token", token);
+    res.json({ message: "User added successfully", data: user });
   } catch (err) {
     res.status(400).send("ERROR:" + err.message);
   }

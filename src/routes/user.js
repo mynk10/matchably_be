@@ -11,7 +11,10 @@ userRouter.get("/user/request/received", userAuth, async (req, res) => {
     const ConnectionRequests = await ConnectionRequest.find({
       toUserId: user._id,
       status: "interested",
-    }).populate("fromUserId", "firstName lastName"); //.populate("fromUserId", ["firstName","lastName"]) ---we can either write it in string or in array
+    }).populate(
+      "fromUserId",
+      "firstName lastName description age gender photoURL"
+    ); //.populate("fromUserId", ["firstName","lastName"]) ---we can either write it in string or in array
     res.json({
       message: "data fetched successfully ",
       data: ConnectionRequests,

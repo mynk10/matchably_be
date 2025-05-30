@@ -1,6 +1,6 @@
-# 🚀 DevTinder
+# 🚀 Matchably
 
-**DevTinder** is a developer-centric social app that lets users discover, connect, and collaborate with fellow developers — similar to how Tinder works, but with meaningful professional connections in mind.
+**Matchably** is a developer-centric social app that lets users discover, connect, and collaborate with fellow developers — similar to how Tinder works, but with meaningful professional connections in mind.
 
 ---
 
